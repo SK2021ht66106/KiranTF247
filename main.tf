@@ -122,10 +122,10 @@ module "traffic_manager" {
 
 module "Appgateway"{
   source = "./modules/Appgateway"
-  name                = "simple2752"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = azurerm_resource_group.main.location
-  subnet_id           = azurerm_subnet.main.id
+  name                     = "simple2752"
+  resource_group_name      = azurerm_resource_group.main.name
+  resource_group_location  = azurerm_resource_group.main.location
+  subnet_id                = azurerm_subnet.main.id
 
   private_ip_address = "10.0.2.100"
 
