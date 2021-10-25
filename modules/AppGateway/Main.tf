@@ -39,7 +39,7 @@ locals {
 resource "azurerm_public_ip" "main" {
   name                = "${var.name}-pip"
   resource_group_name = var.resource_group_name
-  location            = var.location
+  location            = var.resource_group_location
   allocation_method   = "Static"
   sku                 = "Standard"
 
@@ -53,7 +53,7 @@ resource "azurerm_public_ip" "main" {
 resource "azurerm_application_gateway" "main" {
   name                = "${var.name}-appgw"
   resource_group_name = var.resource_group_name
-  location            = var.location
+  location            = var.resource_group_location
   enable_http2        = true
   zones               = var.zones
   firewall_policy_id  = azurerm_web_application_firewall_policy.main.id
@@ -167,7 +167,7 @@ resource "azurerm_application_gateway" "main" {
 resource "azurerm_web_application_firewall_policy" "main" {
   name                = format("%swafpolicy", lower(replace(var.name, "/[[:^alnum:]]/", "")))
   resource_group_name = var.resource_group_name
-  location            = var.location
+  location            = var.resource_group_location
 
   tags = var.tags
 
