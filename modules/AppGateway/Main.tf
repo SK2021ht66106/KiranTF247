@@ -40,7 +40,7 @@ resource "azurerm_public_ip" "main" {
   name                = "${var.name}-pip"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
-  allocation_method   = "Static"
+  allocation_method   = var.allocation_method
   sku                 = "Standard"
 
   tags = var.tags
