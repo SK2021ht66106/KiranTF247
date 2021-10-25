@@ -18,6 +18,12 @@ variable "private_ip_address" {
   description = "The Private IP Address to use for the Application Gateway."
 }
 
+variable "allocation_method" {
+  description = "private IP addedd allocation Meathod- Static/Dynamic "
+  type        = string
+  default     = "Static"
+}
+
 variable "capacity" {
   description = "Min and max capacity for auto scaling"
   type = object({
