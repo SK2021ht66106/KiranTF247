@@ -22,21 +22,30 @@ resource "azurerm_resource_group" "main" {
   location = "eastus"
 }
 
-resource "azurerm_virtual_network" "main" {
+resource "azurerm_virtual_network" "vnet1" {
   name                = "virtualNetwork1"
-  location            = azurerm_resource_group.main.location
+  location            = "eastus"
   resource_group_name = azurerm_resource_group.main.name
-  address_space       = ["10.0.0.0/16"]
-  dns_servers         = ["10.0.0.4", "10.0.0.5"]
+  address_space       = ["192.168.1.0/24"]
 
 }
 
 resource "azurerm_subnet" "main" {
   name                 = "subnet2"
   resource_group_name  = azurerm_resource_group.main.name
-  virtual_network_name = azurerm_virtual_network.main.name
-  address_prefixes     = ["10.0.2.0/24"]
+  virtual_network_name = azurerm_virtual_network.vnet1.name
+  address_prefixes     = ["192.168.1.0/26"]
 }
+
+resource "azurerm_virtual_network" "vnet2" {
+  name                = "virtualNetwork2"
+  location            = "Westus"
+  resource_group_name = azurerm_resource_group.main.name
+  address_space       = ["192.168.2.0/24"]
+
+}
+
+
 
 
 
@@ -128,7 +137,7 @@ module "Appgateway"{
   subnet_id                = azurerm_subnet.main.id
   allocation_method        = "Static"
 
-  private_ip_address = "10.0.2.100"
+  private_ip_address = "192.168.1.8"
 
   capacity = {
     min = 1
@@ -137,3 +146,39 @@ module "Appgateway"{
 
   zones = ["1", "2", "3"]
 }
+  
+  
+  module "vwan" {
+  source = "./modules/vwan"
+  name = "example-vwan"
+  resource_group_name = azurerm_resource_group.main.name
+  resource_group_location = azurerm_resource_group.main.location
+
+   hubs = [
+    {
+      region = "eastus"
+      prefix = "10.1.0.0/16"
+    },
+    {
+      region = "westus"
+      prefix = "10.2.0.0/16"
+    },
+  ]
+
+     connections = [
+    {
+      region = "eastus"
+      id = azurerm_virtual_network.vnet1.id
+    },
+    {
+      region = "westus"
+      id = azurerm_virtual_network.vnet2.id
+    },
+  ]
+
+    depends_on = [
+    azurerm_virtual_network.vnet1,azurerm_virtual_network.vnet2
+  ]
+
+}
+  
