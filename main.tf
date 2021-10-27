@@ -175,6 +175,13 @@ module "Appgateway"{
       id = azurerm_virtual_network.vnet2.id
     },
   ]
+  er_gateway = [
+  {
+     name         = "Gateway1"
+     region       = "eastus"
+     scale_units  = 2 
+  }
+  ]
 
     depends_on = [
     azurerm_virtual_network.vnet1,azurerm_virtual_network.vnet2
