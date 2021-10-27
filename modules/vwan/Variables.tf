@@ -42,3 +42,13 @@ variable "connections" {
 
   description = "A mapping from each region to a list of virtual network IDs to which the virtual hub should be connected."
 }
+
+variable "er_gateway" {
+  type = list(object({
+    name = string
+    region = string
+    scale_units = number
+  }))
+
+  description = "A list of express route gateways to create within the hub"
+}
