@@ -20,3 +20,12 @@ output "connections" {
 
  
 }
+  
+output "er_gateway" {
+  value = [
+    for e in azurerm_express_route_gateway.main : {
+      name = e.name
+    }
+  ]
+  description = "A list of express route gateways"
+}
