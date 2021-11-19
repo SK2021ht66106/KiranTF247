@@ -127,25 +127,6 @@ module "traffic_manager" {
     },
   }
 }
-
-
-module "Appgateway"{
-  source = "./modules/AppGateway"
-  name                     = "simple2752"
-  resource_group_name      = azurerm_resource_group.main.name
-  resource_group_location  = azurerm_resource_group.main.location
-  subnet_id                = azurerm_subnet.main.id
-  allocation_method        = "Static"
-
-  private_ip_address = "192.168.1.8"
-
-  capacity = {
-    min = 1
-    max = 2
-  }
-
-  zones = ["1", "2", "3"]
-}
   
   
   module "vwan" {
